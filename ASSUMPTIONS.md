@@ -36,6 +36,15 @@ and prompted it to use Material Design as a style guide, but the initial draft
 broke editing. After re-prompting to fix the Edit page everything is looking
 beautiful & functional.
 
+* **Testing** Since Gemini has done such a quick & good job of everything (so far spent about an hour on this) i'll incorporate some unit tests.
+With minimal prompting the `App.test.tsx` file is passing and seems robust. The main prompt I gave was related to testing only real things that exist
+for the user instead of internal things like variable names/file names/class names. Basically I told it to ensure my tests won't fail in the future
+due to unrelated changes (i.e. don't be flaky).
+
+* **E2E** Everythings looking good and I still have time left so let's wrap things up with end to end tests, then i'll clean up any of the
+weird chatbot code comments they always tend to leave.
+
+
 ## Future Considerations:
 
 *   Implement robust routing for different views (list, details, add/edit, compare).
