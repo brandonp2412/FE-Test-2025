@@ -8,7 +8,7 @@ This document outlines key technical decisions, trade-offs, and instances where 
 
 2.  **Styling:** Basic inline styles and `App.css` were used for styling. For a production-ready application, a more robust styling solution (e.g., styled-components, Emotion, Tailwind CSS, or a component library) would be considered for better maintainability and scalability.
 
-3.  **State Management:** React's `useState` and `useEffect` hooks were used for local component state and data fetching. For a larger application with more complex state interactions, a dedicated state management library (e.g., Redux, Zustand, Recoil) might be more appropriate.
+3.  **State Management:** Reacts `useState` and `useEffect` hooks were used for local component state and data fetching. For a larger application with more complex state interactions, a dedicated state management library (e.g., Redux, Zustand, Recoil) might be more appropriate.
 
 4.  **API Interaction:** Standard `fetch` API was used for interacting with the backend. A library like Axios could offer more features (e.g., interceptors) for a real-world application.
 
@@ -16,7 +16,7 @@ This document outlines key technical decisions, trade-offs, and instances where 
 
 6.  **Pagination:** For Task 1, the list was simply sliced to display up to 10 horses (`horses.slice(0, 10)`). True pagination with API calls for specific pages would be implemented for a large dataset.
 
-7.  **Task 6 (Comparing Horses):** This task was not fully implemented due to time constraints. The conceptual approach involves a selection mechanism (e.g., checkboxes), a state to hold selected horses, and a dedicated `HorseComparison` component to display selected horse details side-by-side. This would involve additional UI/UX design decisions for selecting and presenting the comparison view.
+7.  **Task 6 (Comparing Horses):** This task has been implemented. Users can select up to two horses from the list using checkboxes. When exactly two horses are selected, a "Compare Selected Horses" button becomes enabled. Clicking this button displays a side-by-side comparison of the two selected horses details in a dedicated `HorseComparison` component. A "Back to List" button is provided to return to the main horse list.
 
 8.  **Form Validation:** Basic client-side validation for the horse name (required field) was implemented. More comprehensive validation (e.g., for numerical inputs, format validation) and server-side validation would be essential for a robust form.
 
@@ -30,10 +30,10 @@ This document outlines key technical decisions, trade-offs, and instances where 
 
 ## Future Considerations:
 
-*   Implement robust routing for different views (list, details, add/edit, compare). 
-*   Improve UI/UX with a dedicated design system or component library. 
-*   Add comprehensive unit and integration tests. 
-*   Optimistic UI updates for add/edit operations. 
-*   Accessibility (a11y) considerations for all interactive elements. 
-*   Performance optimizations (e.g., lazy loading components, memoization). 
-*   Server-side rendering (SSR) or static site generation (SSG) for improved initial load performance and SEO if applicable. 
+*   Implement robust routing for different views (list, details, add/edit, compare).
+*   Improve UI/UX with a dedicated design system or component library.
+*   Add comprehensive unit and integration tests.
+*   Optimistic UI updates for add/edit operations.
+*   Accessibility (a11y) considerations for all interactive elements.
+*   Performance optimizations (e.g., lazy loading components, memoization).
+*   Server-side rendering (SSR) or static site generation (SSG) for improved initial load performance and SEO if applicable.
