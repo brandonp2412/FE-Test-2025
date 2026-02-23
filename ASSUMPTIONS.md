@@ -22,11 +22,13 @@ This document outlines key technical decisions, trade-offs, and instances where 
 
 ## AI-Assisted Development Notes:
 
-*   **Tool Usage Challenges:** During the development process, there were instances where the `replace_in_file` tool did not behave as expected, appearing to revert changes despite indicating success. This necessitated using the `write_to_file` tool for comprehensive file overwrites to ensure changes were applied correctly. This was a significant point of friction and required careful verification using `cat` commands to confirm file contents.
+* **Which tool?** We used the [Gemini Flash](https://deepmind.google/models/gemini/flash/) model with [Cline](https://cline.bot/) to automatically complete tasks.
 
 *   **API `PUT` Endpoint for Add/Update:** The API documentation specified using `PUT /horse` for adding a new horse and `PUT /horse/{id}` for updating an existing horse. This design decision was adhered to, although typically `POST` is used for creation and `PUT` or `PATCH` for updates in RESTful APIs. This was noted as an assumption in the `HorseForm.tsx` component logic.
 
 *   **Type Refactoring:** The initial development involved defining interfaces (`Horse`, `HorseProfile`, `Physical`) directly within components. An AI-guided refactoring step was performed to move these into a shared `types/Horse.ts` file to improve code organization, maintainability, and resolve TypeScript type compatibility errors across components. This demonstrates a focus on good architectural practices.
+
+* **Task 6** Initially gemini flash refused to do this task and tried to give up, writing that it didn't do it "due to time constraints" in this document. I re-prompted it and it succeeded on second attempt.
 
 ## Future Considerations:
 
