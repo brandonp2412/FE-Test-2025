@@ -30,6 +30,12 @@ This document outlines key technical decisions, trade-offs, and instances where 
 
 * **Task 6** Initially gemini flash refused to do this task and tried to give up, writing that it didn't do it "due to time constraints" in this document. I re-prompted it and it succeeded on second attempt.
 
+* **Styling** The flash model created a website with no styling, and it
+finished the tasks really quick so why not make it look beautiful? I went ahead
+and prompted it to use Material Design as a style guide, but the initial draft
+broke editing. After re-prompting to fix the Edit page everything is looking
+beautiful & functional.
+
 ## Future Considerations:
 
 *   Implement robust routing for different views (list, details, add/edit, compare).
