@@ -153,6 +153,7 @@ function App() {
       </AppBar>
       <Container component={Box} sx={{ mt: 4 }}>
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
+          {/* Left Panel: Horse List and Add Button */}
           <Paper sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column' }}>
             <Typography variant="h5" component="h2" gutterBottom>Horse List</Typography>
             <Box sx={{ mb: 2 }}>
@@ -167,11 +168,7 @@ function App() {
               </Button>
             </Box>
 
-            {isAddingHorse && (
-              <HorseForm onSave={handleFormSave} onCancel={handleFormCancel} />
-            )}
-
-            {!isAddingHorse && !horseToEdit && !isComparing && (
+            {(!isAddingHorse && !horseToEdit && !isComparing) && (
               <List>
                 {horses.slice(0, 10).map((horse: Horse) => (
                   <ListItem key={horse.id} disablePadding>
@@ -199,8 +196,17 @@ function App() {
             )}
           </Paper>
 
+          {/* Right Panel: Details, Edit Form, or Comparison */}
           <Paper sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column' }}>
-            {isComparing && selectedHorsesForComparison.length === 2 && (
+            {(isAddingHorse || horseToEdit) && (
+              <HorseForm 
+                horse={horseToEdit || undefined} 
+                onSave={handleFormSave} 
+                onCancel={handleFormCancel} 
+              />
+            )}
+
+            {!(isAddingHorse || horseToEdit) && isComparing && selectedHorsesForComparison.length === 2 && (
               <HorseComparison
                 horse1={selectedHorsesForComparison[0]}
                 horse2={selectedHorsesForComparison[1]}
@@ -208,7 +214,7 @@ function App() {
               />
             )}
 
-            {!isAddingHorse && !horseToEdit && !isComparing && selectedHorseId && (
+            {!(isAddingHorse || horseToEdit) && !isComparing && selectedHorseId && (
               <Box>
                 <HorseDetails horseId={selectedHorseId} />
                 <Button variant="contained" onClick={() => {
@@ -217,7 +223,7 @@ function App() {
                 }} sx={{ mt: 2 }}>Edit Horse</Button>
               </Box>
             )}
-            {!isAddingHorse && !horseToEdit && !isComparing && !selectedHorseId && (
+            {!(isAddingHorse || horseToEdit) && !isComparing && !selectedHorseId && (
               <Typography variant="body1">Select a horse to view details, edit, or select up to two for comparison.</Typography>
             )}
           </Paper>
