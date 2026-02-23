@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Horse, Physical, HorseProfile } from '../types/Horse'; // Import from shared types
+import { Horse } from '../types/Horse'; // Only import Horse
 
 interface HorseFormProps {
   horse?: Horse; // Optional horse for editing
@@ -57,14 +57,12 @@ const HorseForm: React.FC<HorseFormProps> = ({ horse, onSave, onCancel }) => {
         ? `http://localhost:3016/horse/${horse.id}`
         : 'http://localhost:3016/horse';
 
-      const method = horse?.id ? 'PUT' : 'POST'; // API docs say PUT for both add and update. Let's use PUT as instructed.
-      // Assuming PUT /horse adds a new horse and returns the new id (as per API docs)
-      // And PUT /horse/{id} updates the horse (as per API docs)
+      // const method = horse?.id ? 'PUT' : 'POST'; // Removed unused variable. API docs say PUT for both add and update.
 
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', // Corrected this line
         },
         body: JSON.stringify(horseData),
       });

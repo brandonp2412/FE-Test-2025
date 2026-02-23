@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Horse, Physical, HorseProfile } from '../types/Horse'; // Import from shared types
+import { Horse } from '../types/Horse'; // Only import Horse
 
 interface HorseDetailsProps {
   horseId: string;

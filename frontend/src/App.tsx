@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 
-import { Horse, Physical, HorseProfile } from './types/Horse'; // Import from shared types
+import { Horse } from './types/Horse'; // Only import Horse
 import HorseDetails from './components/HorseDetails';
 import HorseForm from './components/HorseForm';
 
@@ -74,8 +74,8 @@ function App() {
         )}
         {!isAddingHorse && !horseToEdit && ( // Only show list if not adding/editing
           <ul>
-            {horses.slice(0, 10).map((horse) => (
-              <li key={horse.id} onClick={() => setSelectedHorseId(horse.id)} style={{ cursor: 'pointer' }}>
+            {horses.slice(0, 10).map((horse: Horse) => ( // Explicitly type horse
+              <li key={horse.id} onClick={() => setSelectedHorseId(horse.id!)} style={{ cursor: 'pointer' }}>
                 {horse.name}
               </li>
             ))}
