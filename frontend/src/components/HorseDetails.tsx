@@ -1,6 +1,19 @@
 import React, { useEffect, useState } from 'react';
 
-import { Horse } from '../types/Horse'; // Only import Horse
+import { Horse } from '../types/Horse';
+
+// MUI Imports
+import {
+  Typography,
+  Box,
+  CircularProgress,
+  Alert,
+  Card,
+  CardContent,
+  List,
+  ListItem,
+  ListItemText,
+} from '@mui/material';
 
 interface HorseDetailsProps {
   horseId: string;
@@ -36,38 +49,51 @@ const HorseDetails: React.FC<HorseDetailsProps> = ({ horseId }) => {
     fetchHorseDetails();
   }, [horseId]);
 
+  const displayValue = (value: any) => (value !== null && value !== undefined && value !== "") ? value : "-";
+
   if (loading) {
-    return <div>Loading horse details...</div>;
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <CircularProgress />
+        <Typography variant="body1" sx={{ ml: 2 }}>Loading horse details...</Typography>
+      </Box>
+    );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <Alert severity="error">Error: {error}</Alert>;
   }
 
   if (!horse) {
-    return <div>No horse data found.</div>;
+    return <Typography variant="body1">No horse data found.</Typography>;
   }
 
-  // Helper to display a value or "-" if null/undefined
-  const displayValue = (value: any) => (value !== null && value !== undefined && value !== "") ? value : "-";
-
   return (
-    <div>
-      <h2>{displayValue(horse.name)}</h2>
-      <p>ID: {displayValue(horse.id)}</p>
-      <h3>Profile:</h3>
-      <p>Classification: {displayValue(horse.classification)}</p>
-      <ul>
-        <li>Favourite Food: {displayValue(horse.profile?.favouriteFood)}</li>
-        <li>
-          Physical:
-          <ul>
-            <li>Height: {displayValue(horse.profile?.physical?.height)} cm</li>
-            <li>Weight: {displayValue(horse.profile?.physical?.weight)} kg</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+    <Card variant="outlined">
+      <CardContent>
+        <Typography variant="h5" component="div" gutterBottom>{displayValue(horse.name)}</Typography>
+        <Typography variant="body2" color="text.secondary">ID: {displayValue(horse.id)}</Typography>
+        <Typography variant="body1" sx={{ mt: 1 }}>Classification: {displayValue(horse.classification)}</Typography>
+
+        <Typography variant="h6" component="div" sx={{ mt: 2 }}>Profile:</Typography>
+        <List dense>
+          <ListItem disablePadding>
+            <ListItemText primary={`Favourite Food: ${displayValue(horse.profile?.favouriteFood)}`} />
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemText primary="Physical:" />
+            <List dense sx={{ pl: 2 }}>
+              <ListItem disablePadding>
+                <ListItemText primary={`Height: ${displayValue(horse.profile?.physical?.height)} cm`} />
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemText primary={`Weight: ${displayValue(horse.profile?.physical?.weight)} kg`} />
+              </ListItem>
+            </List>
+          </ListItem>
+        </List>
+      </CardContent>
+    </Card>
   );
 };
 

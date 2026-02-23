@@ -1,10 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
+import './App.css'; // Keep this for potential global styles or overrides
 
 import { Horse } from './types/Horse';
 import HorseDetails from './components/HorseDetails';
 import HorseForm from './components/HorseForm';
-import HorseComparison from './components/HorseComparison'; // Import HorseComparison
+import HorseComparison from './components/HorseComparison';
+
+// MUI Imports
+import {
+  Container,
+  Typography,
+  Button,
+  List,
+  ListItem,
+  Checkbox,
+  FormControlLabel,
+  Paper,
+  Box,
+  AppBar,
+  Toolbar,
+  CssBaseline,
+} from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#556cd6',
+    },
+    secondary: {
+      main: '#19857b',
+    },
+    error: {
+      main: '#red', // Using a simple string for now, could be theme.palette.error.main
+    },
+  },
+});
 
 function App() {
   const [horses, setHorses] = useState<Horse[]>([]);
@@ -13,8 +44,8 @@ function App() {
   const [horseToEdit, setHorseToEdit] = useState<Horse | null>(null);
   const [selectedHorseId, setSelectedHorseId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [selectedHorsesForComparison, setSelectedHorsesForComparison] = useState<Horse[]>([]); // New state for comparison
-  const [isComparing, setIsComparing] = useState<boolean>(false); // New state for comparison view
+  const [selectedHorsesForComparison, setSelectedHorsesForComparison] = useState<Horse[]>([]);
+  const [isComparing, setIsComparing] = useState<boolean>(false);
 
   const fetchHorses = async () => {
     try {
@@ -33,33 +64,27 @@ function App() {
 
   useEffect(() => {
     fetchHorses();
-  }, [isAddingHorse, horseToEdit, isComparing]); // Re-fetch when adding/editing or comparison is done
+  }, [isAddingHorse, horseToEdit, isComparing]);
 
-  if (loading) {
-    return <div className="App">Loading horses...</div>;
-  }
-
-  // Handler functions for form
   const handleAddClick = () => {
     setIsAddingHorse(true);
-    setSelectedHorseId(null); // Clear selection when adding
+    setSelectedHorseId(null);
     setHorseToEdit(null);
-    setSelectedHorsesForComparison([]); // Clear comparison selection
-    setIsComparing(false); // Exit comparison view
+    setSelectedHorsesForComparison([]);
+    setIsComparing(false);
   };
 
   const handleEditClick = (horse: Horse) => {
     setHorseToEdit(horse);
     setIsAddingHorse(false);
-    setSelectedHorseId(null); // Clear selection when editing
-    setSelectedHorsesForComparison([]); // Clear comparison selection
-    setIsComparing(false); // Exit comparison view
+    setSelectedHorseId(null);
+    setSelectedHorsesForComparison([]);
+    setIsComparing(false);
   };
 
   const handleFormSave = () => {
     setIsAddingHorse(false);
     setHorseToEdit(null);
-    // Re-fetch horses to update the list (useEffect dependency handles this)
   };
 
   const handleFormCancel = () => {
@@ -76,16 +101,16 @@ function App() {
       } else {
         return prevSelected.filter(s => s.id !== horse.id);
       }
-      return prevSelected; // If more than 2 selected, do nothing
+      return prevSelected;
     });
   };
 
   const handleCompareClick = () => {
     if (selectedHorsesForComparison.length === 2) {
       setIsComparing(true);
-      setSelectedHorseId(null); // Clear single horse selection
-      setIsAddingHorse(false); // Exit add view
-      setHorseToEdit(null); // Exit edit view
+      setSelectedHorseId(null);
+      setIsAddingHorse(false);
+      setHorseToEdit(null);
     }
   };
 
@@ -94,68 +119,111 @@ function App() {
     setSelectedHorsesForComparison([]);
   };
 
+  if (loading) {
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Container component={Box} sx={{ mt: 4 }}>
+          <Typography variant="h4" component="h1" gutterBottom>Loading horses...</Typography>
+        </Container>
+      </ThemeProvider>
+    );
+  }
+
   if (error) {
-    return <div className="App">Error: {error}</div>;
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Container component={Box} sx={{ mt: 4 }}>
+          <Typography variant="h4" component="h1" color="error" gutterBottom>Error: {error}</Typography>
+        </Container>
+      </ThemeProvider>
+    );
   }
 
   return (
-    <div className="App" style={{ display: 'flex' }}>
-      <div style={{ flex: 1, padding: '20px', borderRight: '1px solid #ccc' }}>
-        <h1>Horse List</h1>
-        <button onClick={handleAddClick}>Add New Horse</button>
-        <button
-          onClick={handleCompareClick}
-          disabled={selectedHorsesForComparison.length !== 2}
-          style={{ marginLeft: '10px' }}
-        >
-          Compare Selected Horses
-        </button>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Horse Management
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Container component={Box} sx={{ mt: 4 }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
+          <Paper sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="h5" component="h2" gutterBottom>Horse List</Typography>
+            <Box sx={{ mb: 2 }}>
+              <Button variant="contained" onClick={handleAddClick}>Add New Horse</Button>
+              <Button
+                variant="contained"
+                onClick={handleCompareClick}
+                disabled={selectedHorsesForComparison.length !== 2}
+                sx={{ ml: 2 }}
+              >
+                Compare Selected Horses
+              </Button>
+            </Box>
 
-        {isAddingHorse && (
-          <HorseForm onSave={handleFormSave} onCancel={handleFormCancel} />
-        )}
+            {isAddingHorse && (
+              <HorseForm onSave={handleFormSave} onCancel={handleFormCancel} />
+            )}
 
-        {!isAddingHorse && !horseToEdit && !isComparing && (
-          <ul>
-            {horses.slice(0, 10).map((horse: Horse) => (
-              <li key={horse.id} style={{ display: 'flex', alignItems: 'center' }}>
-                <input
-                  type="checkbox"
-                  checked={selectedHorsesForComparison.some(s => s.id === horse.id)}
-                  onChange={(e) => handleHorseSelectForComparison(horse, e.target.checked)}
-                  disabled={selectedHorsesForComparison.length === 2 && !selectedHorsesForComparison.some(s => s.id === horse.id)}
-                />
-                <span onClick={() => setSelectedHorseId(horse.id!)} style={{ cursor: 'pointer', marginLeft: '5px' }}>
-                  {horse.name}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-      <div style={{ flex: 1, padding: '20px' }}>
-        {isComparing && selectedHorsesForComparison.length === 2 && (
-          <HorseComparison
-            horse1={selectedHorsesForComparison[0]}
-            horse2={selectedHorsesForComparison[1]}
-            onBack={handleBackFromComparison}
-          />
-        )}
+            {!isAddingHorse && !horseToEdit && !isComparing && (
+              <List>
+                {horses.slice(0, 10).map((horse: Horse) => (
+                  <ListItem key={horse.id} disablePadding>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={selectedHorsesForComparison.some(s => s.id === horse.id)}
+                          onChange={(e) => handleHorseSelectForComparison(horse, e.target.checked)}
+                          disabled={selectedHorsesForComparison.length === 2 && !selectedHorsesForComparison.some(s => s.id === horse.id)}
+                        />
+                      }
+                      label={
+                        <Typography
+                          component="span"
+                          onClick={() => setSelectedHorseId(horse.id!)}
+                          sx={{ cursor: 'pointer' }}
+                        >
+                          {horse.name}
+                        </Typography>
+                      }
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            )}
+          </Paper>
 
-        {!isAddingHorse && !horseToEdit && !isComparing && selectedHorseId && (
-          <div>
-            <HorseDetails horseId={selectedHorseId} />
-            <button onClick={() => {
-              const horse = horses.find(h => h.id === selectedHorseId);
-              if (horse) handleEditClick(horse);
-            }}>Edit Horse</button>
-          </div>
-        )}
-        {!isAddingHorse && !horseToEdit && !isComparing && !selectedHorseId && (
-          <div>Select a horse to view details, edit, or select up to two for comparison.</div>
-        )}
-      </div>
-    </div>
+          <Paper sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column' }}>
+            {isComparing && selectedHorsesForComparison.length === 2 && (
+              <HorseComparison
+                horse1={selectedHorsesForComparison[0]}
+                horse2={selectedHorsesForComparison[1]}
+                onBack={handleBackFromComparison}
+              />
+            )}
+
+            {!isAddingHorse && !horseToEdit && !isComparing && selectedHorseId && (
+              <Box>
+                <HorseDetails horseId={selectedHorseId} />
+                <Button variant="contained" onClick={() => {
+                  const horse = horses.find(h => h.id === selectedHorseId);
+                  if (horse) handleEditClick(horse);
+                }} sx={{ mt: 2 }}>Edit Horse</Button>
+              </Box>
+            )}
+            {!isAddingHorse && !horseToEdit && !isComparing && !selectedHorseId && (
+              <Typography variant="body1">Select a horse to view details, edit, or select up to two for comparison.</Typography>
+            )}
+          </Paper>
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
 }
 
