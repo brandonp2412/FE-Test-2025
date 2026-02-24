@@ -42,7 +42,8 @@ for the user instead of internal things like variable names/file names/class nam
 due to unrelated changes (i.e. don't be flaky).
 
 * **E2E** Everythings looking good and I still have time left so let's wrap things up with end to end tests, then i'll clean up any of the
-weird chatbot code comments they always tend to leave.
+weird chatbot code comments they always tend to leave. *UPDATE* Gemini failed to make these end to end tests all pass, but most of them are,
+and it's a great start. Due to time constraints I'll leave this as is and finish cleaning up.
 
 
 ## Future Considerations:
