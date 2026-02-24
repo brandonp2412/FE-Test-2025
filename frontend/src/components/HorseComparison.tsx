@@ -37,15 +37,7 @@ const HorseComparison: React.FC<HorseComparisonProps> = ({ horse1, horse2, onBac
                 <ListItemText primary={`Favourite Food: ${displayValue(horse1.profile?.favouriteFood)}`} />
               </ListItem>
               <ListItem disablePadding>
-                <ListItemText primary="Physical:" />
-                <List dense sx={{ pl: 2 }}>
-                  <ListItem disablePadding>
-                    <ListItemText primary={`Height: ${displayValue(horse1.profile?.physical?.height)} cm`} />
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <ListItemText primary={`Weight: ${displayValue(horse1.profile?.physical?.weight)} kg`} />
-                  </ListItem>
-                </List>
+                <ListItemText primary={`Physical: ${displayValue(horse1.profile?.physical?.height)} cm x ${displayValue(horse1.profile?.physical?.weight)} kg`} />
               </ListItem>
             </List>
           </CardContent>
@@ -61,15 +53,7 @@ const HorseComparison: React.FC<HorseComparisonProps> = ({ horse1, horse2, onBac
                 <ListItemText primary={`Favourite Food: ${displayValue(horse2.profile?.favouriteFood)}`} />
               </ListItem>
               <ListItem disablePadding>
-                <ListItemText primary="Physical:" />
-                <List dense sx={{ pl: 2 }}>
-                  <ListItem disablePadding>
-                    <ListItemText primary={`Height: ${displayValue(horse2.profile?.physical?.height)} cm`} />
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <ListItemText primary={`Weight: ${displayValue(horse2.profile?.physical?.weight)} kg`} />
-                  </ListItem>
-                </List>
+                <ListItemText primary={`Physical: ${displayValue(horse2.profile?.physical?.height)} cm x ${displayValue(horse2.profile?.physical?.weight)} kg`} />
               </ListItem>
             </List>
           </CardContent>
@@ -81,4 +65,4 @@ const HorseComparison: React.FC<HorseComparisonProps> = ({ horse1, horse2, onBac
 };
 
 export default HorseComparison;
-export {}; // Add this line to make it a module
+export { }; // Add this line to make it a module

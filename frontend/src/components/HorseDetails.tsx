@@ -81,15 +81,7 @@ const HorseDetails: React.FC<HorseDetailsProps> = ({ horseId }) => {
             <ListItemText primary={`Favourite Food: ${displayValue(horse.profile?.favouriteFood)}`} />
           </ListItem>
           <ListItem disablePadding>
-            <ListItemText primary="Physical:" />
-            <List dense sx={{ pl: 2 }}>
-              <ListItem disablePadding>
-                <ListItemText primary={`Height: ${displayValue(horse.profile?.physical?.height)} cm`} />
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemText primary={`Weight: ${displayValue(horse.profile?.physical?.weight)} kg`} />
-              </ListItem>
-            </List>
+            <ListItemText primary={`Physical: ${displayValue(horse.profile?.physical?.height)} cm x ${displayValue(horse.profile?.physical?.weight)} kg`} />
           </ListItem>
         </List>
       </CardContent>
