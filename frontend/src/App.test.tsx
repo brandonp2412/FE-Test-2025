@@ -99,6 +99,22 @@ describe('App Component User Flows', () => {
     expect(screen.getByText(/Classification: Horse/i)).toBeInTheDocument(); // 450kg >= 400kg
   });
 
+  test('should not refetch the horse list for comparison-only UI changes', async () => {
+    render(<App />);
+    await waitFor(() => expect(screen.getByText(/Thunderdash/i)).toBeInTheDocument());
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+
+    fireEvent.click(screen.getByLabelText(/Thunderdash/i));
+    fireEvent.click(screen.getByLabelText(/Spirit/i));
+    fireEvent.click(screen.getByRole('button', { name: /compare selected horses/i }));
+    await waitFor(() => expect(screen.getByText(/Horse Comparison/i)).toBeInTheDocument());
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+
+    fireEvent.click(screen.getByRole('button', { name: /back to list/i }));
+    await waitFor(() => expect(screen.getByText(/Thunderdash/i)).toBeInTheDocument());
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+  });
+
   test('should allow adding a new horse', async () => {
     render(<App />);
     await waitFor(() => expect(screen.getByText(/Thunderdash/i)).toBeInTheDocument());
