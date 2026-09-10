@@ -22,6 +22,7 @@ const HorseForm: React.FC<HorseFormProps> = ({ horse, onSave, onCancel }) => {
   const [height, setHeight] = useState<string>(horse?.profile?.physical?.height?.toString() || '');
   const [weight, setWeight] = useState<string>(horse?.profile?.physical?.weight?.toString() || '');
   const [nameError, setNameError] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     setName(horse?.name || '');
@@ -44,9 +45,10 @@ const HorseForm: React.FC<HorseFormProps> = ({ horse, onSave, onCancel }) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!validateForm()) {
+    if (isSaving || !validateForm()) {
       return;
     }
+    setIsSaving(true);
 
     const horseData: Horse = {
       name: name,
@@ -79,6 +81,8 @@ const HorseForm: React.FC<HorseFormProps> = ({ horse, onSave, onCancel }) => {
       onSave();
     } catch (e: any) {
       alert(`Failed to save horse: ${e.message}`);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -131,8 +135,10 @@ const HorseForm: React.FC<HorseFormProps> = ({ horse, onSave, onCancel }) => {
       />
 
       <Box sx={{ mt: 2 }}>
-        <Button type="submit" variant="contained">Save</Button>
-        <Button type="button" variant="outlined" onClick={onCancel} sx={{ ml: 2 }}>Cancel</Button>
+        <Button type="submit" variant="contained" disabled={isSaving}>
+          {isSaving ? 'Saving...' : 'Save'}
+        </Button>
+        <Button type="button" variant="outlined" onClick={onCancel} disabled={isSaving} sx={{ ml: 2 }}>Cancel</Button>
       </Box>
     </Box>
   );

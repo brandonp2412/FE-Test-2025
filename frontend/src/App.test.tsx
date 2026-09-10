@@ -132,6 +132,25 @@ describe('App Component User Flows', () => {
     await waitFor(() => expect(screen.getByLabelText('New Horse')).toBeInTheDocument());
   });
 
+  test('should prevent duplicate saves while a horse request is in flight', async () => {
+    render(<App />);
+    await waitFor(() => expect(screen.getByText(/Thunderdash/i)).toBeInTheDocument());
+
+    fireEvent.click(screen.getByRole('button', { name: /add new horse/i }));
+    fireEvent.change(await screen.findByLabelText('Name'), { target: { value: 'Slow Horse' } });
+
+    fetchSpy.mockImplementationOnce(() => new Promise<Response>(() => {}));
+
+    const saveButton = screen.getByRole('button', { name: /save/i });
+    fireEvent.click(saveButton);
+
+    await waitFor(() => expect(screen.getByRole('button', { name: /saving/i })).toBeDisabled());
+    expect(screen.getByRole('button', { name: /cancel/i })).toBeDisabled();
+
+    fireEvent.click(screen.getByRole('button', { name: /saving/i }));
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+  });
+
   test('should show horses beyond the first ten', async () => {
     mockHorses = Array.from({ length: 11 }, (_, index) => ({
       id: String(index + 1),
