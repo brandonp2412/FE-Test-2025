@@ -72,6 +72,24 @@ describe('App Component User Flows', () => {
     expect(screen.getByText(/Black Beauty/i)).toBeInTheDocument();
   });
 
+  test('should recover when loading the horse list initially fails', async () => {
+    fetchSpy.mockReset()
+      .mockResolvedValueOnce(new Response('', { status: 503 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify(mockHorses), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }));
+
+    render(<App />);
+
+    await screen.findByText(/HTTP error! status: 503/i);
+    fireEvent.click(screen.getByRole('button', { name: /retry/i }));
+
+    await screen.findByText(/Thunderdash/i);
+    expect(screen.queryByText(/HTTP error! status: 503/i)).not.toBeInTheDocument();
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+  });
+
   test('should display horse details when a horse name is clicked', async () => {
     render(<App />);
     await waitFor(() => expect(screen.getByText(/Thunderdash/i)).toBeInTheDocument());

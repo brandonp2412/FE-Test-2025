@@ -55,6 +55,7 @@ function App() {
       }
       const data: Horse[] = await response.json();
       setHorses(data);
+      setError(null);
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -65,6 +66,12 @@ function App() {
   useEffect(() => {
     fetchHorses();
   }, [isAddingHorse, horseToEdit, isComparing]);
+
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
+    fetchHorses();
+  };
 
   const handleAddClick = () => {
     setIsAddingHorse(true);
@@ -136,6 +143,7 @@ function App() {
         <CssBaseline />
         <Container component={Box} sx={{ mt: 4 }}>
           <Typography variant="h4" component="h1" color="error" gutterBottom>Error: {error}</Typography>
+          <Button variant="contained" onClick={handleRetry}>Retry</Button>
         </Container>
       </ThemeProvider>
     );
