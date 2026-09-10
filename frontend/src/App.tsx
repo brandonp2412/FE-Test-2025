@@ -179,7 +179,7 @@ function App() {
 
             {(!isAddingHorse && !horseToEdit && !isComparing) && (
               <List>
-                {horses.slice(0, 10).map((horse: Horse) => (
+                {horses.map((horse: Horse) => (
                   <ListItem key={horse.id} disablePadding>
                     <FormControlLabel
                       control={

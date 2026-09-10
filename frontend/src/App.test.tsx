@@ -129,7 +129,20 @@ describe('App Component User Flows', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /save/i }));
 
-    await waitFor(() => expect(screen.getByText(/New Horse/i)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByLabelText('New Horse')).toBeInTheDocument());
+  });
+
+  test('should show horses beyond the first ten', async () => {
+    mockHorses = Array.from({ length: 11 }, (_, index) => ({
+      id: String(index + 1),
+      name: `Horse ${index + 1}`,
+      profile: { favouriteFood: null, physical: { height: null, weight: null } },
+    }));
+
+    render(<App />);
+
+    await waitFor(() => expect(screen.getByText('Horse 11')).toBeInTheDocument());
+    expect(screen.getByText('Horse 1')).toBeInTheDocument();
   });
 
   test('should allow editing an existing horse', async () => {
