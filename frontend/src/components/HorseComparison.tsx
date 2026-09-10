@@ -1,5 +1,5 @@
 import React from 'react';
-import { Horse } from '../types/Horse';
+import { Horse, getHorseClassification } from '../types/Horse';
 
 // MUI Imports
 import {
@@ -30,7 +30,7 @@ const HorseComparison: React.FC<HorseComparisonProps> = ({ horse1, horse2, onBac
           <CardContent>
             <Typography variant="h6" component="div" gutterBottom>{displayValue(horse1.name)}</Typography>
             <Typography variant="body2" color="text.secondary">ID: {displayValue(horse1.id)}</Typography>
-            <Typography variant="body1" sx={{ mt: 1 }}>Classification: {displayValue(horse1.classification)}</Typography>
+            <Typography variant="body1" sx={{ mt: 1 }}>Classification: {displayValue(getHorseClassification(horse1))}</Typography>
             <Typography variant="subtitle1" component="div" sx={{ mt: 2 }}>Profile:</Typography>
             <List dense>
               <ListItem disablePadding>
@@ -46,7 +46,7 @@ const HorseComparison: React.FC<HorseComparisonProps> = ({ horse1, horse2, onBac
           <CardContent>
             <Typography variant="h6" component="div" gutterBottom>{displayValue(horse2.name)}</Typography>
             <Typography variant="body2" color="text.secondary">ID: {displayValue(horse2.id)}</Typography>
-            <Typography variant="body1" sx={{ mt: 1 }}>Classification: {displayValue(horse2.classification)}</Typography>
+            <Typography variant="body1" sx={{ mt: 1 }}>Classification: {displayValue(getHorseClassification(horse2))}</Typography>
             <Typography variant="subtitle1" component="div" sx={{ mt: 2 }}>Profile:</Typography>
             <List dense>
               <ListItem disablePadding>

@@ -12,5 +12,13 @@ export interface Horse {
   id?: string; // ID is optional for new horses
   name: string;
   profile: HorseProfile | null;
-  classification?: string; // Add classification field for HorseDetails
+  classification?: string;
+}
+
+export function getHorseClassification(horse: Horse): string | null {
+  const weight = horse.profile?.physical?.weight;
+  if (weight === null || weight === undefined) {
+    return horse.classification ?? null;
+  }
+  return weight >= 400 ? 'Horse' : 'Pony';
 }

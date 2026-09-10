@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Horse } from '../types/Horse';
+import { Horse, getHorseClassification } from '../types/Horse';
 
 // MUI Imports
 import {
@@ -32,11 +32,6 @@ const HorseDetails: React.FC<HorseDetailsProps> = ({ horseId }) => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data: Horse = await response.json();
-        
-        // Determine classification based on weight
-        if (data.profile?.physical?.weight !== null && data.profile?.physical?.weight !== undefined) {
-          data.classification = data.profile.physical.weight >= 400 ? 'Horse' : 'Pony';
-        }
         setHorse(data);
 
       } catch (e: any) {
@@ -73,7 +68,7 @@ const HorseDetails: React.FC<HorseDetailsProps> = ({ horseId }) => {
       <CardContent>
         <Typography variant="h5" component="div" gutterBottom>{displayValue(horse.name)}</Typography>
         <Typography variant="body2" color="text.secondary">ID: {displayValue(horse.id)}</Typography>
-        <Typography variant="body1" sx={{ mt: 1 }}>Classification: {displayValue(horse.classification)}</Typography>
+        <Typography variant="body1" sx={{ mt: 1 }}>Classification: {displayValue(getHorseClassification(horse))}</Typography>
 
         <Typography variant="h6" component="div" sx={{ mt: 2 }}>Profile:</Typography>
         <List dense>

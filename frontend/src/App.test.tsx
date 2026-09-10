@@ -138,6 +138,8 @@ describe('App Component User Flows', () => {
     await waitFor(() => screen.getByText(/Horse Comparison/i));
     expect(screen.getByText(/Thunderdash/i)).toBeInTheDocument();
     expect(screen.getByText(/Spirit/i)).toBeInTheDocument();
+    expect(screen.getByText('Classification: Horse')).toBeInTheDocument();
+    expect(screen.getByText('Classification: Pony')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: /back to list/i }));
     await waitFor(() => expect(screen.getByText(/Thunderdash/i)).toBeInTheDocument());
