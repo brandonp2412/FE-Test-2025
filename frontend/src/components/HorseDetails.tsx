@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { Horse, getHorseClassification } from '../types/Horse';
 
-// MUI Imports
 import {
   Typography,
   Box,
@@ -25,23 +24,37 @@ const HorseDetails: React.FC<HorseDetailsProps> = ({ horseId }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+
+    setLoading(true);
+    setError(null);
+    setHorse(null);
+
     const fetchHorseDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:3016/horse/${horseId}`);
+        const response = await fetch(`http://localhost:3016/horse/${horseId}`, {
+          signal: controller.signal,
+        });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data: Horse = await response.json();
-        setHorse(data);
-
+        if (!controller.signal.aborted) {
+          setHorse(data);
+        }
       } catch (e: any) {
-        setError(e.message);
+        if (e?.name !== 'AbortError' && !controller.signal.aborted) {
+          setError(e?.message || 'Failed to load horse details.');
+        }
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchHorseDetails();
+    return () => controller.abort();
   }, [horseId]);
 
   const displayValue = (value: any) => (value !== null && value !== undefined && value !== "") ? value : "-";
