@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './App.css'; // Keep this for potential global styles or overrides
 
 import { Horse } from './types/Horse';
@@ -32,7 +32,7 @@ const theme = createTheme({
       main: '#19857b',
     },
     error: {
-      main: '#red', // Using a simple string for now, could be theme.palette.error.main
+      main: '#d32f2f',
     },
   },
 });
@@ -47,7 +47,7 @@ function App() {
   const [selectedHorsesForComparison, setSelectedHorsesForComparison] = useState<Horse[]>([]);
   const [isComparing, setIsComparing] = useState<boolean>(false);
 
-  const fetchHorses = async () => {
+  const fetchHorses = useCallback(async () => {
     try {
       const response = await fetch('http://localhost:3016/horse');
       if (!response.ok) {
@@ -55,16 +55,17 @@ function App() {
       }
       const data: Horse[] = await response.json();
       setHorses(data);
+      setError(null);
     } catch (e: any) {
       setError(e.message);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    fetchHorses();
-  }, [isAddingHorse, horseToEdit, isComparing]);
+    void fetchHorses();
+  }, [fetchHorses]);
 
   const handleAddClick = () => {
     setIsAddingHorse(true);
@@ -85,6 +86,7 @@ function App() {
   const handleFormSave = () => {
     setIsAddingHorse(false);
     setHorseToEdit(null);
+    void fetchHorses();
   };
 
   const handleFormCancel = () => {
